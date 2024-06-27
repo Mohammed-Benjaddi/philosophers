@@ -2,10 +2,13 @@ CC = cc
 CFLAGS = #-Wall -Wextra -Werror
 
 NAME = philo
-SRCS = philo.c utils.c
+SRCS = philo.c utils.c routine.c initialization.c
 OBJS = $(SRCS:.c=.o)
 
 all: $(NAME)
+
+%.o: %.c philo.h
+	$(CC) $(CFLAGS) -c -pthread $< -o $@
 
 $(NAME): $(OBJS)
 	$(CC) $(CFLAGS) $(OBJS) -o $(NAME)

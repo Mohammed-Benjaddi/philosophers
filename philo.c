@@ -30,21 +30,14 @@ int parsing(char **args)
 
 int main(int ac, char **av)
 {
-  data_t data;
+  data_t *data;
 
-  data.philos = malloc(sizeof(philo_t) * 200);
-  data.forks = malloc(sizeof(pthread_mutex_t) * 200);
+  data = malloc(sizeof(data_t));
 
-  (void) data.philos;
-  (void) data.forks;
   if(ac != 5 && ac != 6)
-    return (ft_error("Something went wrong\n"), 1);
+    return (ft_error("Something went wrong"), 1);
   if(!parsing(av + 1))
-    return (ft_error("Something went wrong\n"), 1);
-  if(!init_vars(av + 1, &data))
-    return (ft_error("Something went wrong\n"), 1);
-  if(!init_mutex(&data))
-    return (ft_error("Something went wrong\n"), 1);
-  if(!init_philos(&data))
-    return (ft_error("Something went wrong\n"), 1);
+    return (ft_error("Something went wrong"), 1);
+  if(!init_vars(av + 1, data))
+    return (ft_error("Something went wrong"), 1);
 }
