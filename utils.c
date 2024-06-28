@@ -48,3 +48,18 @@ int ft_atoi(char *str)
   }
   return (result * sign);
 }
+
+
+void print_msg(philo_t *philo, int flag)
+{
+  if (flag == 1)
+    printf("%s%d %d is eating%s\n", GREEN, get_current_time() - philo->current_time, philo->id, NC);
+  else if (flag == 2)
+    printf("%s%d %d is sleeping%s\n", CYAN, get_current_time() - philo->current_time, philo->id, NC);
+  else if (flag == 3)
+    printf("%s%d %d is thinking%s\n", MAGENTA, get_current_time() - philo->current_time, philo->id, NC);
+  else if (flag == 4)
+    printf("%s%d %d has taken the left fork%s\n", YELLOW, get_current_time() - philo->current_time, philo->id, NC);
+  else if (flag == 5)
+    printf("%s%d %d has taken the right fork%s\n", YELLOW, get_current_time() - philo->current_time, philo->id, NC);
+}

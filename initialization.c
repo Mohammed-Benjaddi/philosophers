@@ -5,6 +5,7 @@ int init_vars(char **args, data_t *data)
   data->n_philos = ft_atoi(args[0]);
   data->philos = (philo_t *)malloc(sizeof(philo_t) * data->n_philos);
   data->forks = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t) * data->n_philos);
+  data->is_dead = 0;
   if(!init_mutex(data))
     return (ft_error("Something went wrong"), 0);
   if(!init_philos(data, args))
@@ -17,12 +18,15 @@ int init_mutex(data_t *data)
   int i;
 
   i = 0;
+
   while (i < data->n_philos)
   {
     if(pthread_mutex_init(&data->forks[i], NULL) != 0)
       return 0;
     i++;
   }
+  if(pthread_mutex_init(&data->print, NULL) != 0)
+      return 0;
   return 1;
 }
 
@@ -30,7 +34,6 @@ int init_philos_vars(philo_t *philo, int i, int n_philos, char **args)
 {
   philo->id = i + 1;
   philo->eat_count = 0;
-  philo->is_dead = 0;
   philo->left_fork = i;
   philo->right_fork = (i + 1) % n_philos;
   philo->current_time = get_current_time();

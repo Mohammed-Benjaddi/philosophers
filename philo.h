@@ -29,7 +29,6 @@ typedef struct philo_s
   int left_fork;
   int right_fork;
   int eat_count;
-  int is_dead;
   int deadlock;
   int time_to_die;
   int time_to_eat;
@@ -44,6 +43,9 @@ typedef struct data_s
   int n_philos;
   philo_t *philos;
   pthread_mutex_t *forks;
+  pthread_mutex_t print;
+  int is_dead;
+
 } data_t;
 
 void ft_error(char *str);
@@ -60,5 +62,6 @@ void ft_sleep(philo_t *philo);
 void ft_eat(philo_t *philo);
 
 void *philo_routine(void *data);
+void print_msg(philo_t *philo, int flag);
 
 #endif
