@@ -27,6 +27,8 @@ int init_mutex(data_t *data)
   }
   if(pthread_mutex_init(&data->print, NULL) != 0)
       return 0;
+  if(pthread_mutex_init(&data->check_meal, NULL) != 0)
+      return 0;
   return 1;
 }
 
@@ -71,8 +73,12 @@ int init_philos(data_t *data, char **av)
       return 0;
     i++;
   }
+
   i = 0;
   while(i < data->n_philos)
+  {
+    printf("------------------------>\n");
     pthread_join(data->philos[i++].thread, NULL);
+  }
   return 1;
 }

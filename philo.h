@@ -44,8 +44,8 @@ typedef struct data_s
   philo_t *philos;
   pthread_mutex_t *forks;
   pthread_mutex_t print;
+  pthread_mutex_t check_meal;
   int is_dead;
-
 } data_t;
 
 void ft_error(char *str);

@@ -52,6 +52,7 @@ int ft_atoi(char *str)
 
 void print_msg(philo_t *philo, int flag)
 {
+  pthread_mutex_lock(&philo->data->print);
   if (flag == 1)
     printf("%s%d %d is eating%s\n", GREEN, get_current_time() - philo->current_time, philo->id, NC);
   else if (flag == 2)
@@ -59,7 +60,9 @@ void print_msg(philo_t *philo, int flag)
   else if (flag == 3)
     printf("%s%d %d is thinking%s\n", MAGENTA, get_current_time() - philo->current_time, philo->id, NC);
   else if (flag == 4)
-    printf("%s%d %d has taken the left fork%s\n", YELLOW, get_current_time() - philo->current_time, philo->id, NC);
+    printf("%s%d %d has taken a fork%s\n", YELLOW, get_current_time() - philo->current_time, philo->id, NC);
   else if (flag == 5)
-    printf("%s%d %d has taken the right fork%s\n", YELLOW, get_current_time() - philo->current_time, philo->id, NC);
+    printf("%s%d %d has taken a fork%s\n", YELLOW, get_current_time() - philo->current_time, philo->id, NC);
+  pthread_mutex_unlock(&philo->data->print);
+
 }

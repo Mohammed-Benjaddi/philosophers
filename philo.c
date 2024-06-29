@@ -40,4 +40,5 @@ int main(int ac, char **av)
     return (ft_error("Something went wrong"), 1);
   if(!init_vars(av + 1, data))
     return (ft_error("Something went wrong"), 1);
+  
 }
