@@ -19,7 +19,7 @@ void ft_wait(int ms)
 
   start = get_current_time();
   while (get_current_time() - start < ms)
-    usleep(500);
+    usleep(250);
 }
 
 int ft_atoi(char *str)
@@ -53,6 +53,12 @@ int ft_atoi(char *str)
 void print_msg(philo_t *philo, int flag)
 {
   pthread_mutex_lock(&philo->data->print);
+  if (philo->data->is_dead)
+  {
+    printf("%s%d died%s\n", RED, philo->id, NC);
+    pthread_mutex_unlock(&philo->data->print);
+    return ;
+  }
   if (flag == 1)
     printf("%s%d %d is eating%s\n", GREEN, get_current_time() - philo->current_time, philo->id, NC);
   else if (flag == 2)
@@ -64,5 +70,4 @@ void print_msg(philo_t *philo, int flag)
   else if (flag == 5)
     printf("%s%d %d has taken a fork%s\n", YELLOW, get_current_time() - philo->current_time, philo->id, NC);
   pthread_mutex_unlock(&philo->data->print);
-
 }

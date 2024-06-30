@@ -34,7 +34,9 @@ typedef struct philo_s
   int time_to_eat;
   int time_to_sleep;
   int times_to_eat;
-  int meal_time; 
+  int last_meal;
+  pthread_mutex_t is_eating;
+  pthread_mutex_t check_meal;
   data_t *data;
 } philo_t;
 
@@ -44,7 +46,6 @@ typedef struct data_s
   philo_t *philos;
   pthread_mutex_t *forks;
   pthread_mutex_t print;
-  pthread_mutex_t check_meal;
   int is_dead;
 } data_t;
 
@@ -63,5 +64,7 @@ void ft_eat(philo_t *philo);
 
 void *philo_routine(void *data);
 void print_msg(philo_t *philo, int flag);
+// void check_is_dead(data_t *data);
+int check_dead_philo(data_t *data);
 
 #endif
