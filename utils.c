@@ -55,7 +55,7 @@ void print_msg(philo_t *philo, int flag)
   pthread_mutex_lock(&philo->data->print);
   if (philo->data->is_dead)
   {
-    printf("%s%d died%s\n", RED, philo->id, NC);
+    printf("%s%d %d died%s\n", RED, get_current_time() - philo->current_time, philo->id, NC);
     pthread_mutex_unlock(&philo->data->print);
     return ;
   }

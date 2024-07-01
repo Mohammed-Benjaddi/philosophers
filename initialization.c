@@ -99,8 +99,8 @@ int init_philos(data_t *data, char **av)
   } 
   while (1)
   {
-    // printf("-------------------------------------\n");
-    usleep(500);
+    // usleep(500);
+
     if(!check_dead_philo(data))
       break;
   }

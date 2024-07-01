@@ -60,7 +60,7 @@ void ft_wait(int ms);
 
 void ft_think(philo_t *philo);
 void ft_sleep(philo_t *philo);
-void ft_eat(philo_t *philo);
+void ft_eat(philo_t *phi);
 
 void *philo_routine(void *data);
 void print_msg(philo_t *philo, int flag);
