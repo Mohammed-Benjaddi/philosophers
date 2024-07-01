@@ -53,12 +53,15 @@ int ft_atoi(char *str)
 void print_msg(philo_t *philo, int flag)
 {
   pthread_mutex_lock(&philo->data->print);
+  // pthread_mutex_lock(&philo->data->dead_mutex);
   if (philo->data->is_dead)
   {
     printf("%s%d %d died%s\n", RED, get_current_time() - philo->current_time, philo->id, NC);
     pthread_mutex_unlock(&philo->data->print);
+    // pthread_mutex_unlock(&philo->data->dead_mutex);
     return ;
   }
+  // pthread_mutex_unlock(&philo->data->dead_mutex);
   if (flag == 1)
     printf("%s%d %d is eating%s\n", GREEN, get_current_time() - philo->current_time, philo->id, NC);
   else if (flag == 2)

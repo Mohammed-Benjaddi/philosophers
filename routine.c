@@ -34,15 +34,18 @@ int check_dead_philo(data_t *data)
     pthread_mutex_lock(&philos[i].check_meal);
     // printf("at checking the dead =====> %d\n", data->philos[i].last_meal);
     int curr = get_current_time();
+    // pthread_mutex_lock(&philos[i].check_meal);
     if(curr - philos[i].last_meal >= philos[i].time_to_die)
     {
-      // printf("%s--------> id: %d --- last meal: %p --- time to die: %d%s\n", RED, philos[i].id, &philos[i], philos[i].time_to_die, NC);
+      // pthread_mutex_lock(&data->dead_mutex);
       data->is_dead = 1;
+      // pthread_mutex_unlock(&data->dead_mutex);
       print_msg(&philos[i], -1);
       return 0;
     }
     pthread_mutex_unlock(&philos[i].check_meal);
     i++;
+    usleep(70);
   }
   return 1;
 }
@@ -63,8 +66,8 @@ void ft_eat(philo_t *philo)
   // finish_eating(philo, philo->right_fork);
   pthread_mutex_lock(&philo->check_meal);
   philo->last_meal = get_current_time();
-  // printf("at eating %d ========> %p\n", philo->id, &philo);
   pthread_mutex_unlock(&philo->check_meal);
+  // printf("at eating %d ========> %p\n", philo->id, &philo);
 }
 
 void destroy_all_forks(pthread_mutex_t *forks, int size)
@@ -77,6 +80,7 @@ void destroy_all_forks(pthread_mutex_t *forks, int size)
     pthread_mutex_destroy(&forks[i]);
     i++;
   }
+
   // printf("all forks have been destroyed successfully\n");
 }
 
@@ -87,14 +91,19 @@ void *philo_routine(void *philos)
   philo = (philo_t *) philos;
   if(philo->id % 2 == 0)
     ft_wait(philo->time_to_eat);
-  while (!philo->data->is_dead)
+  while (1)
   {
-    ft_eat(philo);
-    ft_sleep(philo);
-    ft_think(philo);
-    // check_is_dead(philo.data);
-    if(!check_dead_philo(philo->data))
-      break;
+    // pthread_mutex_lock(&philo->data->dead_mutex);
+    // if(!philo->data->is_dead)
+    // {
+      ft_eat(philo);
+      ft_sleep(philo);
+      ft_think(philo);
+      // check_is_dead(philo.data);
+      if(!check_dead_philo(philo->data))
+        break;
+    // }
+    // pthread_mutex_unlock(&philo->data->dead_mutex);
   }
   return NULL;
 }

@@ -46,6 +46,7 @@ typedef struct data_s
   philo_t *philos;
   pthread_mutex_t *forks;
   pthread_mutex_t print;
+  pthread_mutex_t dead_mutex;
   int is_dead;
 } data_t;
 
@@ -57,6 +58,7 @@ int init_mutex(data_t *data);
 void *philo_routine(void *data);
 int get_current_time();
 void ft_wait(int ms);
+void destroy_all_forks(pthread_mutex_t *forks, int size);
 
 void ft_think(philo_t *philo);
 void ft_sleep(philo_t *philo);
