@@ -50,27 +50,35 @@ int ft_atoi(char *str)
 }
 
 
-void print_msg(philo_t *philo, int flag)
+int print_msg(philo_t *philo, int flag)
 {
-  pthread_mutex_lock(&philo->data->print);
-  // pthread_mutex_lock(&philo->data->dead_mutex);
-  if (philo->data->is_dead)
+  pthread_mutex_lock(&philo->data->someone_died_m);
+  if(!philo->data->someone_died)
   {
-    printf("%s%d %d died%s\n", RED, get_current_time() - philo->current_time, philo->id, NC);
-    pthread_mutex_unlock(&philo->data->print);
+    pthread_mutex_lock(&philo->data->print);
+    // pthread_mutex_lock(&philo->data->dead_mutex);
+    if (philo->data->is_dead)
+    {
+      philo->data->someone_died = 1;
+      printf("%s%d %d died%s\n", RED, get_current_time() - philo->current_time, philo->id, NC);
+      pthread_mutex_unlock(&philo->data->print);
+      // pthread_mutex_unlock(&philo->data->dead_mutex);
+      // exit(0);
+      return -1;
+    }
     // pthread_mutex_unlock(&philo->data->dead_mutex);
-    return ;
+    if (flag == 1)
+      printf("%s%d %d is eating%s\n", GREEN, get_current_time() - philo->current_time, philo->id, NC);
+    else if (flag == 2)
+      printf("%s%d %d is sleeping%s\n", CYAN, get_current_time() - philo->current_time, philo->id, NC);
+    else if (flag == 3)
+      printf("%s%d %d is thinking%s\n", MAGENTA, get_current_time() - philo->current_time, philo->id, NC);
+    else if (flag == 4)
+      printf("%s%d %d has taken a fork%s\n", YELLOW, get_current_time() - philo->current_time, philo->id, NC);
+    else if (flag == 5)
+      printf("%s%d %d has taken a fork%s\n", YELLOW, get_current_time() - philo->current_time, philo->id, NC);
+    pthread_mutex_unlock(&philo->data->print);
   }
-  // pthread_mutex_unlock(&philo->data->dead_mutex);
-  if (flag == 1)
-    printf("%s%d %d is eating%s\n", GREEN, get_current_time() - philo->current_time, philo->id, NC);
-  else if (flag == 2)
-    printf("%s%d %d is sleeping%s\n", CYAN, get_current_time() - philo->current_time, philo->id, NC);
-  else if (flag == 3)
-    printf("%s%d %d is thinking%s\n", MAGENTA, get_current_time() - philo->current_time, philo->id, NC);
-  else if (flag == 4)
-    printf("%s%d %d has taken a fork%s\n", YELLOW, get_current_time() - philo->current_time, philo->id, NC);
-  else if (flag == 5)
-    printf("%s%d %d has taken a fork%s\n", YELLOW, get_current_time() - philo->current_time, philo->id, NC);
-  pthread_mutex_unlock(&philo->data->print);
+  pthread_mutex_unlock(&philo->data->someone_died_m);
+  return 1;
 }

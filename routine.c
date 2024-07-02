@@ -40,8 +40,11 @@ int check_dead_philo(data_t *data)
       // pthread_mutex_lock(&data->dead_mutex);
       data->is_dead = 1;
       // pthread_mutex_unlock(&data->dead_mutex);
-      print_msg(&philos[i], -1);
-      return 0;
+      if(print_msg(&philos[i], -1) == -1)
+      {
+        printf("------------> returned -1\n");
+        return -1;
+      }
     }
     pthread_mutex_unlock(&philos[i].check_meal);
     i++;

@@ -47,7 +47,9 @@ typedef struct data_s
   pthread_mutex_t *forks;
   pthread_mutex_t print;
   pthread_mutex_t dead_mutex;
+  int someone_died;
   int is_dead;
+  pthread_mutex_t someone_died_m;
 } data_t;
 
 void ft_error(char *str);
@@ -65,7 +67,7 @@ void ft_sleep(philo_t *philo);
 void ft_eat(philo_t *phi);
 
 void *philo_routine(void *data);
-void print_msg(philo_t *philo, int flag);
+int print_msg(philo_t *philo, int flag);
 // void check_is_dead(data_t *data);
 int check_dead_philo(data_t *data);
 

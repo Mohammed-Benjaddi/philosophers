@@ -6,6 +6,7 @@ int init_vars(char **args, data_t *data)
   data->philos = (philo_t *)malloc(sizeof(philo_t) * data->n_philos);
   data->forks = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t) * data->n_philos);
   data->is_dead = 0;
+  data->someone_died = 0;
   if(!init_mutex(data))
     return (ft_error("Something went wrong"), 0);
   if(!init_philos(data, args))
@@ -30,6 +31,8 @@ int init_mutex(data_t *data)
   if(pthread_mutex_init(&data->print, NULL) != 0)
     return 0;
   if(pthread_mutex_init(&data->dead_mutex, NULL) != 0)
+    return 0;
+  if(pthread_mutex_init(&data->someone_died_m, NULL) != 0)
     return 0;
   return 1;
 }
@@ -83,11 +86,16 @@ int init_philos(data_t *data, char **av)
   } 
   while (1)
   {
-    // usleep(500);
+    // if(data->is_dead)
+    //   return 0;
     if(!data->is_dead)
     {
-      if(!check_dead_philo(data))
+      if(check_dead_philo(data) == -1)
+      {
+        printf("at infinite loop\n");
         return 0;
+      }
+      usleep(50);
     }
   }
   i = 0;
