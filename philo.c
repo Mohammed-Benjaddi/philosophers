@@ -37,8 +37,8 @@ int main(int ac, char **av)
   if(ac != 5 && ac != 6)
     return (ft_error("Something went wrong"), 1);
   if(!parsing(av + 1))
-    return (ft_error("Something went wrong"), 1);
-  if(!init_vars(av + 1, data))
+    return (ft_error("Arguments are not valid"), 1);
+  init_program(av + 1, data);
   // destroy_all_forks(data.forks, data->n_philos);
-    return (1);
+  return (1);
 }

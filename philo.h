@@ -54,7 +54,7 @@ typedef struct data_s
 
 void ft_error(char *str);
 int ft_atoi(char *str);
-int init_vars(char **args, data_t *data);
+void init_program(char **args, data_t *data);
 int init_philos(data_t *data, char **av);
 int init_mutex(data_t *data);
 void *philo_routine(void *data);

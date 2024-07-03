@@ -1,6 +1,6 @@
 #include "philo.h"
 
-int init_vars(char **args, data_t *data)
+void init_program(char **args, data_t *data)
 {
   data->n_philos = ft_atoi(args[0]);
   data->philos = (philo_t *)malloc(sizeof(philo_t) * data->n_philos);
@@ -8,10 +8,10 @@ int init_vars(char **args, data_t *data)
   data->is_dead = 0;
   data->someone_died = 0;
   if(!init_mutex(data))
-    return (ft_error("Something went wrong"), 0);
+    return;
   if(!init_philos(data, args))
-    return (0);
-  return 1;
+    return;
+  // return;
 }
 
 int init_mutex(data_t *data)
@@ -60,7 +60,7 @@ int init_philos_vars(philo_t *philo, int i, int n_philos, char **args)
   if(philo->time_to_die <= 0 || philo->time_to_eat <= 0
     || philo->time_to_sleep <= 0 || n_philos <= 0
     || n_philos > 200 || philo->times_to_eat <= 0)
-    return 0;
+    return (0);
   printf("times to eat: %d\n", philo->times_to_eat);
   return 1;
 }
@@ -73,7 +73,7 @@ int init_philos(data_t *data, char **av)
   while (i < data->n_philos)
   {
     if(!init_philos_vars(&data->philos[i], i, data->n_philos, av))
-      return 0;
+      return (ft_error("args must be positive numbers"), 0);
     data->philos[i].data = data;
     pthread_mutex_lock(&data->philos[i].check_meal);
     data->philos[i].last_meal = get_current_time();
@@ -84,8 +84,6 @@ int init_philos(data_t *data, char **av)
   } 
   while (1)
   {
-    // if(data->is_dead)
-    //   return 0;
     if(!data->is_dead)
     {
       if(check_dead_philo(data) == -1)
