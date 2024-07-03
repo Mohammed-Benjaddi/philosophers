@@ -30,20 +30,17 @@ int check_dead_philo(data_t *data)
   philos = data->philos;
   while (i < data->n_philos)
   {
-    // usleep(100);
     pthread_mutex_lock(&philos[i].check_meal);
-    // printf("at checking the dead =====> %d\n", data->philos[i].last_meal);
     int curr = get_current_time();
-    // pthread_mutex_lock(&philos[i].check_meal);
-    if(curr - philos[i].last_meal >= philos[i].time_to_die)
+    if(curr - philos[i].last_meal >= philos[i].time_to_die || philos[i].eat_count == philos[i].times_to_eat)
     {
-      // pthread_mutex_lock(&data->dead_mutex);
+      
       data->is_dead = 1;
-      // pthread_mutex_unlock(&data->dead_mutex);
       if(print_msg(&philos[i], -1) == -1)
       {
-        printf("------------> returned -1\n");
-        return -1;
+        printf("------------> %d\n", philos[i].data->is_dead);
+        return 0;
+        exit(1);
       }
     }
     pthread_mutex_unlock(&philos[i].check_meal);
@@ -61,16 +58,15 @@ void ft_eat(philo_t *philo)
   print_msg(philo, 5);
   print_msg(philo, 1);
   ft_wait(philo->time_to_eat);
-  // pthread_mutex_lock(&philo->check_meal);
-  // philo->last_meal = get_current_time();
-  // pthread_mutex_unlock(&philo->check_meal);
   pthread_mutex_unlock(&philo->data->forks[philo->left_fork]);
   pthread_mutex_unlock(&philo->data->forks[philo->right_fork]);
-  // finish_eating(philo, philo->right_fork);
   pthread_mutex_lock(&philo->check_meal);
   philo->last_meal = get_current_time();
   pthread_mutex_unlock(&philo->check_meal);
-  // printf("at eating %d ========> %p\n", philo->id, &philo);
+  pthread_mutex_lock(&philo->is_eating);
+  philo->eat_count++;
+  // print_msg(philo, 10);
+  pthread_mutex_unlock(&philo->is_eating);
 }
 
 void destroy_all_forks(pthread_mutex_t *forks, int size)
@@ -99,6 +95,7 @@ void *philo_routine(void *philos)
     // pthread_mutex_lock(&philo->data->dead_mutex);
     // if(!philo->data->is_dead)
     // {
+
       ft_eat(philo);
       ft_sleep(philo);
       ft_think(philo);

@@ -77,8 +77,12 @@ int print_msg(philo_t *philo, int flag)
       printf("%s%d %d has taken a fork%s\n", YELLOW, get_current_time() - philo->current_time, philo->id, NC);
     else if (flag == 5)
       printf("%s%d %d has taken a fork%s\n", YELLOW, get_current_time() - philo->current_time, philo->id, NC);
+    else if (flag == 10)
+      printf("%s%d eating count: %d%s\n", RED, philo->id, philo->eat_count, NC);
     pthread_mutex_unlock(&philo->data->print);
   }
+  else
+    exit(1);
   pthread_mutex_unlock(&philo->data->someone_died_m);
   return 1;
 }
