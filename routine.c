@@ -34,9 +34,11 @@ int check_dead_philo(data_t *data)
     int curr = get_current_time();
     if(curr - philos[i].last_meal >= philos[i].time_to_die)
     {
+      pthread_mutex_lock(&philos[i].data->is_dead_m);
       data->is_dead = 1;
+      pthread_mutex_unlock(&philos[i].data->is_dead_m);
       if(print_msg(&philos[i], -1) == -1)
-        return 0;
+        return 1;
     }
     pthread_mutex_unlock(&philos[i].check_meal);
     i++;
@@ -48,9 +50,9 @@ int check_dead_philo(data_t *data)
   if(i == data->n_philos)
   {
     print_msg(&philos[0], 25);
-    return -1;
+    return 1;
   }
-  return 1;
+  return 0;
 }
 
 void ft_eat(philo_t *philo)
@@ -102,10 +104,8 @@ void *philo_routine(void *philos)
       ft_eat(philo);
       ft_sleep(philo);
       ft_think(philo);
-      // check_is_dead(philo.data);
-      if(!check_dead_philo(philo->data))
+      if(check_dead_philo(philo->data))
         break;
-    // }
     // pthread_mutex_unlock(&philo->data->dead_mutex);
   }
   return NULL;

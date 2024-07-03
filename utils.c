@@ -57,6 +57,7 @@ int print_msg(philo_t *philo, int flag)
   {
     pthread_mutex_lock(&philo->data->print);
     // pthread_mutex_lock(&philo->data->dead_mutex);
+    pthread_mutex_lock(&philo->data->is_dead_m);
     if (philo->data->is_dead)
     {
       philo->data->someone_died = 1;
@@ -66,6 +67,7 @@ int print_msg(philo_t *philo, int flag)
       // exit(0);
       return -1;
     }
+    pthread_mutex_unlock(&philo->data->is_dead_m);
     // pthread_mutex_unlock(&philo->data->dead_mutex);
     if (flag == 1)
       printf("%s%d %d is eating%s\n", GREEN, get_current_time() - philo->current_time, philo->id, NC);

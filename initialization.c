@@ -11,7 +11,6 @@ void init_program(char **args, data_t *data)
     return;
   if(!init_philos(data, args))
     return;
-  // return;
 }
 
 int init_mutex(data_t *data)
@@ -19,23 +18,24 @@ int init_mutex(data_t *data)
   int i;
 
   i = 0;
-
   while (i < data->n_philos)
   {
     if(pthread_mutex_init(&data->forks[i], NULL) != 0)
-      return 0;
+      return (ft_error("mutex init failed"), 0);
     if(pthread_mutex_init(&data->philos[i].check_meal, NULL) != 0)
-      return 0;
+      return (ft_error("mutex init failed"), 0);
     if(pthread_mutex_init(&data->philos[i].is_eating, NULL) != 0)
-      return 0;
+      return (ft_error("mutex init failed"), 0);
     i++;
   }
   if(pthread_mutex_init(&data->print, NULL) != 0)
-    return 0;
+    return (ft_error("mutex init failed"), 0);
   if(pthread_mutex_init(&data->dead_mutex, NULL) != 0)
-    return 0;
+    return (ft_error("mutex init failed"), 0);
   if(pthread_mutex_init(&data->someone_died_m, NULL) != 0)
-    return 0;
+    return (ft_error("mutex init failed"), 0);
+  if(pthread_mutex_init(&data->is_dead_m, NULL) != 0)
+    return (ft_error("mutex init failed"), 0);
   return 1;
 }
 
@@ -61,7 +61,7 @@ int init_philos_vars(philo_t *philo, int i, int n_philos, char **args)
     || philo->time_to_sleep <= 0 || n_philos <= 0
     || n_philos > 200 || philo->times_to_eat <= 0)
     return (0);
-  printf("times to eat: %d\n", philo->times_to_eat);
+  // printf("times to eat: %d\n", philo->times_to_eat);
   return 1;
 }
 
@@ -79,26 +79,26 @@ int init_philos(data_t *data, char **av)
     data->philos[i].last_meal = get_current_time();
     pthread_mutex_unlock(&data->philos[i].check_meal);
     if(pthread_create(&data->philos[i].thread, NULL, philo_routine, &data->philos[i]) != 0)
-      return 0;
+      return (ft_error("failed to create thread"), 0);
     i++;
   } 
   while (1)
   {
     if(!data->is_dead)
     {
-      if(check_dead_philo(data) == -1)
+      if(check_dead_philo(data))
       {
         printf("at infinite loop\n");
-        return 0;
+        return 1;
       }
       usleep(50);
     }
-    else
-    {
-      printf("one of the philosophers was died\n");
-      // exit(1);
-      return 0;
-    }
+    // else
+    // {
+    //   printf("one of the philosophers was died\n");
+    //   // exit(1);
+    //   return 0;
+    // }
   }
   i = 0;
   while(i < data->n_philos)

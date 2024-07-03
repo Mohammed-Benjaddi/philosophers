@@ -50,6 +50,7 @@ typedef struct data_s
   int someone_died;
   int is_dead;
   pthread_mutex_t someone_died_m;
+  pthread_mutex_t is_dead_m;
 } data_t;
 
 void ft_error(char *str);
