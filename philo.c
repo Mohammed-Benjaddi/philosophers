@@ -39,6 +39,6 @@ int main(int ac, char **av)
   if(!parsing(av + 1))
     return (ft_error("Arguments are not valid"), 1);
   init_program(av + 1, data);
-  // destroy_all_forks(data.forks, data->n_philos);
+  // destroy_all_forks(data->forks, data->n_philos);
   return (1);
 }

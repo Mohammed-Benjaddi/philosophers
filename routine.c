@@ -37,21 +37,23 @@ int check_dead_philo(data_t *data)
       pthread_mutex_lock(&philos[i].data->is_dead_m);
       data->is_dead = 1;
       pthread_mutex_unlock(&philos[i].data->is_dead_m);
-      if(print_msg(&philos[i], -1) == -1)
+      print_msg(&philos[i], -1);
         return 1;
     }
     pthread_mutex_unlock(&philos[i].check_meal);
     i++;
     usleep(70);
   }
-  i = 0;
-  while (i < data->n_philos && philos[i].eat_count >= philos[i].times_to_eat)
-    i++;
-  if(i == data->n_philos)
-  {
-    print_msg(&philos[0], 25);
-    return 1;
-  }
+  // i = 0;
+
+  // while (i < data->n_philos && philos[i].eat_count >= philos[i].times_to_eat)
+  //   i++;
+
+  // if(i == data->n_philos)
+  // {
+  //   print_msg(&philos[0], 25);
+  //   return 1;
+  // }
   return 0;
 }
 
@@ -62,15 +64,17 @@ void ft_eat(philo_t *philo)
   print_msg(philo, 4);
   print_msg(philo, 5);
   print_msg(philo, 1);
-  ft_wait(philo->time_to_eat);
-  pthread_mutex_unlock(&philo->data->forks[philo->left_fork]);
-  pthread_mutex_unlock(&philo->data->forks[philo->right_fork]);
+
   pthread_mutex_lock(&philo->check_meal);
   philo->last_meal = get_current_time();
   pthread_mutex_unlock(&philo->check_meal);
+
+  ft_wait(philo->time_to_eat);
+  pthread_mutex_unlock(&philo->data->forks[philo->left_fork]);
+  pthread_mutex_unlock(&philo->data->forks[philo->right_fork]);
+
   pthread_mutex_lock(&philo->is_eating);
   philo->eat_count++;
-  print_msg(philo, 10);
   pthread_mutex_unlock(&philo->is_eating);
 }
 
@@ -94,19 +98,22 @@ void *philo_routine(void *philos)
 
   philo = (philo_t *) philos;
   if(philo->id % 2 == 0)
-    ft_wait(philo->time_to_eat);
+    usleep(1500);
+    //ft_wait(philo->time_to_eat);
   while (1)
   {
-    // pthread_mutex_lock(&philo->data->dead_mutex);
-    // if(!philo->data->is_dead)
-    // {
-
-      ft_eat(philo);
-      ft_sleep(philo);
-      ft_think(philo);
-      if(check_dead_philo(philo->data))
-        break;
-    // pthread_mutex_unlock(&philo->data->dead_mutex);
+    pthread_mutex_lock(&philo->data->is_dead_m);
+    if(philo->data->is_dead)
+    {
+      break;
+      pthread_mutex_unlock(&philo->data->is_dead_m);
+    }
+    pthread_mutex_unlock(&philo->data->is_dead_m);
+    if(check_dead_philo(philo->data))
+      break;
+    ft_eat(philo);
+    ft_sleep(philo);
+    ft_think(philo);
   }
   return NULL;
 }
