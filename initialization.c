@@ -45,7 +45,7 @@ int init_philos_vars(philo_t *philo, int i, int n_philos, char **args)
   philo->eat_count = 0;
   philo->left_fork = i;
   philo->right_fork = (i + 1) % n_philos;
-  philo->current_time = get_current_time();
+  philo->start_time = get_current_time();
   philo->time_to_die = ft_atoi(args[1]);
   philo->time_to_eat = ft_atoi(args[2]);
   philo->time_to_sleep = ft_atoi(args[3]);
@@ -72,9 +72,9 @@ int init_philos(data_t *data, char **av)
   i = 0;
   while (i < data->n_philos)
   {
+    data->philos[i].data = data;
     if(!init_philos_vars(&data->philos[i], i, data->n_philos, av))
       return (ft_error("args must be positive numbers"), 0);
-    data->philos[i].data = data;
     pthread_mutex_lock(&data->philos[i].check_meal);
     data->philos[i].last_meal = get_current_time();
     pthread_mutex_unlock(&data->philos[i].check_meal);

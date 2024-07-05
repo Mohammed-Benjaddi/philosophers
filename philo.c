@@ -28,8 +28,27 @@ int parsing(char **args)
   return 1;
 }
 
+void ft_free(void **arr)
+{
+  int i;
+
+  i = 0;
+  while (arr[i])
+  {
+    free(arr[i]);
+    i++;
+  }
+  free(arr);
+}
+
+// void check_leaks()
+// {
+//   system("leaks -q philo");
+// }
+
 int main(int ac, char **av)
 {
+  // atexit(check_leaks);
   data_t *data;
 
   data = malloc(sizeof(data_t));
@@ -39,6 +58,7 @@ int main(int ac, char **av)
   if(!parsing(av + 1))
     return (ft_error("Arguments are not valid"), 1);
   init_program(av + 1, data);
-  // destroy_all_forks(data->forks, data->n_philos);
+  destroy_all_forks(data, data->n_philos);
+  free(data);
   return (1);
 }

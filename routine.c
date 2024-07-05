@@ -78,17 +78,24 @@ void ft_eat(philo_t *philo)
   pthread_mutex_unlock(&philo->is_eating);
 }
 
-void destroy_all_forks(pthread_mutex_t *forks, int size)
+void destroy_all_forks(data_t *data, int size)
 {
   int i;
+  pthread_mutex_t *forks;
+  philo_t *philos;
 
   i = 0;
+  forks = data->forks;
+  philos = data->philos;
   while (i < size)
   {
     pthread_mutex_destroy(&forks[i]);
+    pthread_mutex_destroy(&philos[i].is_eating);
+    pthread_mutex_destroy(&philos[i].check_meal);
     i++;
   }
-
+  free(forks);
+  free(philos);
   // printf("all forks have been destroyed successfully\n");
 }
 
