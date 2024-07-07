@@ -2,24 +2,14 @@
 
 void ft_think(philo_t *philo)
 {
-  // pthread_mutex_lock(&philo->data->print);
   print_msg(philo, 3);
-  // pthread_mutex_unlock(&philo->data->print);
 }
 
 void ft_sleep(philo_t *philo)
 {
-  // pthread_mutex_lock(&philo->data->print);
   print_msg(philo, 2);
   ft_wait(philo->data->time_to_sleep);
-  // pthread_mutex_unlock(&philo->data->print);
 }
-
-// void finish_eating(philo_t *philo, int right_fork)
-// {
-//   philo->deadlock = 1;
-//   philo->data->philos[right_fork].deadlock = 0;
-// }
 
 void check_dead_philo(data_t *data)
 {
@@ -30,19 +20,19 @@ void check_dead_philo(data_t *data)
   philos = data->philos;
   while (i < data->n_philos)
   {
-    pthread_mutex_lock(&philos[i].check_meal);
-    int curr = get_current_time();
-    if(curr - philos[i].last_meal >= philos[i].data->times_to_eat)
+    printf("current time: %d\n", get_current_time());
+    // pthread_mutex_lock(&philos[i].check_meal);
+    if(get_current_time() - philos[i].last_meal >= philos[i].data->times_to_eat)
     {
       // pthread_mutex_lock(&philos[i].data->is_dead_m);
       data->is_dead = 1;
       // pthread_mutex_unlock(&philos[i].data->is_dead_m);
       print_msg(&philos[i], -1);
-        return 1;
+      break;
     }
-    pthread_mutex_unlock(&philos[i].check_meal);
+    // pthread_mutex_unlock(&philos[i].check_meal);
     i++;
-    usleep(70);
+    usleep(100);
   }
   // i = 0;
 
@@ -54,7 +44,6 @@ void check_dead_philo(data_t *data)
   //   print_msg(&philos[0], 25);
   //   return 1;
   // }
-  return 0;
 }
 
 void ft_eat(philo_t *philo)
@@ -67,6 +56,7 @@ void ft_eat(philo_t *philo)
 
   pthread_mutex_lock(&philo->check_meal);
   philo->last_meal = get_current_time();
+  printf("-------> start: %d\n", philo->data->start_time);
   pthread_mutex_unlock(&philo->check_meal);
 
   ft_wait(philo->data->time_to_eat);
@@ -106,10 +96,11 @@ void *philo_routine(void *philos)
 {
   philo_t *philo;
 
+  philo = (philo_t *)philos;
   philo = (philo_t *) philos;
   if(philo->id % 2 == 0)
     ft_wait(1500);
-  while (philo->data->is_dead)
+  while (!philo->data->is_dead)
   {
     ft_eat(philo);
     ft_sleep(philo);

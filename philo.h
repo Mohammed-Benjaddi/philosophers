@@ -41,8 +41,8 @@ typedef struct data_s
   pthread_mutex_t *forks;
   pthread_mutex_t print;
   pthread_mutex_t dead_mutex;
-  int someone_died;
   int is_dead;
+  // int someone_died;
   // pthread_mutex_t someone_died_m;
   // pthread_mutex_t is_dead_m;
   int time_to_die;
@@ -54,8 +54,8 @@ typedef struct data_s
 
 void ft_error(char *str);
 int ft_atoi(char *str);
-void init_program(char **args, data_t *data);
-int init_philos(data_t *data, char **av);
+int init_program(char **args, data_t *data);
+void init_philos(data_t *data);
 int init_mutex(data_t *data);
 void *philo_routine(void *data);
 int get_current_time();
@@ -69,6 +69,7 @@ void ft_eat(philo_t *phi);
 void *philo_routine(void *data);
 int print_msg(philo_t *philo, int flag);
 // void check_is_dead(data_t *data);
-int check_dead_philo(data_t *data);
+void check_dead_philo(data_t *data);
+void start_program(data_t *data);
 
 #endif

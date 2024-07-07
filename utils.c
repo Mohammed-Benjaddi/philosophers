@@ -53,27 +53,31 @@ int ft_atoi(char *str)
 int print_msg(philo_t *philo, int flag)
 {
     // printf("--> %d\n", flag);
-    pthread_mutex_lock(&philo->data->is_dead_m);
+    // pthread_mutex_lock(&philo->data->is_dead_m);
     pthread_mutex_lock(&philo->data->print);
     if (philo->data->is_dead)
     {
-      pthread_mutex_unlock(&philo->data->is_dead_m);
-      printf("%s%d %d died%s\n", RED, get_current_time() - philo->start_time, philo->id, NC);
+      // pthread_mutex_unlock(&philo->data->is_dead_m);
+      printf("%s%d %d died%s\n", RED, get_current_time() - philo->data->start_time, philo->id, NC);
       pthread_mutex_unlock(&philo->data->print);
+      // exit(1);
       return -1;
     }
-    if (flag == 1)
-      printf("%s%d %d is eating%s\n", GREEN, get_current_time() - philo->start_time, philo->id, NC);
-    else if (flag == 2)
-      printf("%s%d %d is sleeping%s\n", CYAN, get_current_time() - philo->start_time, philo->id, NC);
-    else if (flag == 3)
-      printf("%s%d %d is thinking%s\n", MAGENTA, get_current_time() - philo->start_time, philo->id, NC);
-    else if (flag == 4)
-      printf("%s%d %d has taken a fork%s\n", YELLOW, get_current_time() - philo->start_time, philo->id, NC);
-    else if (flag == 5)
-      printf("%s%d %d has taken a fork%s\n", YELLOW, get_current_time() - philo->start_time, philo->id, NC);
+    else
+    {
+      if (flag == 1)
+        printf("%s%d %d is eating%s\n", GREEN, get_current_time() - philo->data->start_time, philo->id, NC);
+      else if (flag == 2)
+        printf("%s%d %d is sleeping%s\n", CYAN, get_current_time() - philo->data->start_time, philo->id, NC);
+      else if (flag == 3)
+        printf("%s%d %d is thinking%s\n", MAGENTA, get_current_time() - philo->data->start_time, philo->id, NC);
+      else if (flag == 4)
+        printf("%s%d %d has taken a fork%s\n", YELLOW, get_current_time() - philo->data->start_time, philo->id, NC);
+      else if (flag == 5)
+        printf("%s%d %d has taken a fork%s\n", YELLOW, get_current_time() - philo->data->start_time, philo->id, NC);
+    }
   pthread_mutex_unlock(&philo->data->print);
-  pthread_mutex_unlock(&philo->data->is_dead_m);
+  // pthread_mutex_unlock(&philo->data->is_dead_m);
 
   return 1;
 }

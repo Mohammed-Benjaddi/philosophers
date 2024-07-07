@@ -2,7 +2,7 @@ CC = cc
 CFLAGS = #-fsanitize=address -g #-Wall -Wextra -Werror
 
 NAME = philo
-SRCS = philo.c utils.c routine.c initialization.c
+SRCS = philo.c utils.c routine.c initialization.c threads.c
 OBJS = $(SRCS:.c=.o)
 
 all: $(NAME)
