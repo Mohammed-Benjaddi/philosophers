@@ -24,18 +24,12 @@ typedef struct data_s data_t;
 typedef struct philo_s
 {
   int id;
-  int start_time;
   pthread_t thread;
   int left_fork;
   int right_fork;
   int eat_count;
-  int deadlock;
-  int time_to_die;
-  int time_to_eat;
-  int time_to_sleep;
-  int times_to_eat;
   int last_meal;
-  pthread_mutex_t is_eating;
+  // pthread_mutex_t is_eating;
   pthread_mutex_t check_meal;
   data_t *data;
 } philo_t;
@@ -49,8 +43,13 @@ typedef struct data_s
   pthread_mutex_t dead_mutex;
   int someone_died;
   int is_dead;
-  pthread_mutex_t someone_died_m;
-  pthread_mutex_t is_dead_m;
+  // pthread_mutex_t someone_died_m;
+  // pthread_mutex_t is_dead_m;
+  int time_to_die;
+  int time_to_eat;
+  int time_to_sleep;
+  int start_time;
+  int times_to_eat;
 } data_t;
 
 void ft_error(char *str);
