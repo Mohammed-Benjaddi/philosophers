@@ -48,7 +48,7 @@ typedef struct data_s
   int time_to_die;
   int time_to_eat;
   int time_to_sleep;
-  int start_time;
+  size_t start_time;
   int times_to_eat;
 } data_t;
 
@@ -58,7 +58,7 @@ int init_program(char **args, data_t *data);
 void init_philos(data_t *data);
 int init_mutex(data_t *data);
 void *philo_routine(void *data);
-int get_current_time();
+size_t get_current_time();
 void ft_wait(int ms);
 void destroy_all_forks(data_t *data, int size);
 

@@ -20,7 +20,7 @@ void check_dead_philo(data_t *data)
   philos = data->philos;
   while (i < data->n_philos)
   {
-    printf("current time: %d\n", get_current_time());
+    // printf("current time: %zu\n", get_current_time());
     // pthread_mutex_lock(&philos[i].check_meal);
     if(get_current_time() - philos[i].last_meal >= philos[i].data->times_to_eat)
     {
@@ -56,7 +56,7 @@ void ft_eat(philo_t *philo)
 
   pthread_mutex_lock(&philo->check_meal);
   philo->last_meal = get_current_time();
-  printf("-------> start: %d\n", philo->data->start_time);
+  // printf("-------> start: %zu\n", philo->data->start_time);
   pthread_mutex_unlock(&philo->check_meal);
 
   ft_wait(philo->data->time_to_eat);
@@ -99,7 +99,7 @@ void *philo_routine(void *philos)
   philo = (philo_t *)philos;
   philo = (philo_t *) philos;
   if(philo->id % 2 == 0)
-    ft_wait(1500);
+    ft_wait(5500);
   while (!philo->data->is_dead)
   {
     ft_eat(philo);

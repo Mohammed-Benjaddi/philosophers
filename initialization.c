@@ -8,6 +8,7 @@ int init_program(char **args, data_t *data)
   data->is_dead = 0;
   // data->someone_died = 0;
   data->start_time = get_current_time();
+  // printf("-----> %lu\n", data->start_time);
   data->time_to_die = ft_atoi(args[1]);
   data->time_to_eat = ft_atoi(args[2]);
   data->time_to_sleep = ft_atoi(args[3]);
@@ -63,7 +64,7 @@ void init_philos(data_t *data)
     data->philos[i].eat_count = 0;
     data->philos[i].left_fork = i;
     data->philos[i].right_fork = (i + 1) % data->n_philos;
-    data->philos[i].last_meal = 0;
+    data->philos[i].last_meal = get_current_time();
     i++;
   }
 }
