@@ -80,6 +80,8 @@ void print_msg(philo_t *philo, int flag)
         printf("%s%lld %d has taken a fork%s\n", YELLOW, get_current_time() - philo->data->start_time, philo->id, NC);
       else if (flag == 5)
         printf("%s%lld %d has taken a fork%s\n", YELLOW, get_current_time() - philo->data->start_time, philo->id, NC);
+      else if (flag == 25)
+        printf("%sAll philos ate%s\n", RED, NC);
     }
     pthread_mutex_unlock(&philo->data->print);
   }

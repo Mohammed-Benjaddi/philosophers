@@ -7,6 +7,7 @@ int init_program(char **args, data_t *data)
   data->forks = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t) * data->n_philos);
   data->is_dead = 0;
   data->finished = 0;
+  data->all_philos_ate = 0;
   // data->someone_died = 0;
   data->start_time = get_current_time();
   // printf("-----> %d\n", data->start_time);

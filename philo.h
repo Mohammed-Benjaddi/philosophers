@@ -51,6 +51,7 @@ typedef struct data_s
   int time_to_sleep;
   long long start_time;
   int times_to_eat;
+  int all_philos_ate;
 } data_t;
 
 void ft_error(char *str);
