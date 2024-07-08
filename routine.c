@@ -22,17 +22,23 @@ void check_dead_philo(data_t *data)
   {
     // printf("current time: %zu\n", get_current_time());
     // pthread_mutex_lock(&philos[i].check_meal);
-    if(get_current_time() - philos[i].last_meal >= philos[i].data->times_to_eat)
+  
+    if(get_current_time() - philos[i].last_meal >= philos[i].data->time_to_die)
     {
       // pthread_mutex_lock(&philos[i].data->is_dead_m);
+      printf("---> current time: %d\n", get_current_time());
+      printf("---> last meal: %d\n", philos[i].last_meal);
+      printf("result: %d\n", get_current_time() - philos[i].last_meal);
+      printf("---> time to die: %d\n", philos[i].data->time_to_die);
       data->is_dead = 1;
       // pthread_mutex_unlock(&philos[i].data->is_dead_m);
       print_msg(&philos[i], -1);
+      exit(1);
       break;
     }
     // pthread_mutex_unlock(&philos[i].check_meal);
     i++;
-    usleep(100);
+    usleep(150);
   }
   // i = 0;
 
@@ -53,13 +59,13 @@ void ft_eat(philo_t *philo)
   print_msg(philo, 4);
   print_msg(philo, 5);
   print_msg(philo, 1);
-
-  pthread_mutex_lock(&philo->check_meal);
+  // pthread_mutex_lock(&philo->check_meal);
   philo->last_meal = get_current_time();
   // printf("-------> start: %zu\n", philo->data->start_time);
-  pthread_mutex_unlock(&philo->check_meal);
+  // pthread_mutex_unlock(&philo->check_meal);
 
   ft_wait(philo->data->time_to_eat);
+  // printf("%safter eating...%s\n", RED, NC);
   pthread_mutex_unlock(&philo->data->forks[philo->left_fork]);
   pthread_mutex_unlock(&philo->data->forks[philo->right_fork]);
 
@@ -99,7 +105,7 @@ void *philo_routine(void *philos)
   philo = (philo_t *)philos;
   philo = (philo_t *) philos;
   if(philo->id % 2 == 0)
-    ft_wait(5500);
+    ft_wait(500);
   while (!philo->data->is_dead)
   {
     ft_eat(philo);
