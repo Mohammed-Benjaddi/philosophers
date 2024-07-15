@@ -29,7 +29,7 @@ typedef struct philo_s
   int right_fork;
   int eat_count;
   int last_meal;
-  // pthread_mutex_t is_eating;
+  pthread_mutex_t is_eating;
   pthread_mutex_t check_meal;
   data_t *data;
 } philo_t;
@@ -41,6 +41,7 @@ typedef struct data_s
   pthread_mutex_t *forks;
   pthread_mutex_t print;
   pthread_mutex_t dead_mutex;
+  pthread_mutex_t finished_m;
   int is_dead;
   int finished;
   // int someone_died;
@@ -69,7 +70,7 @@ void ft_sleep(philo_t *philo);
 void ft_eat(philo_t *phi);
 
 void *philo_routine(void *data);
-void print_msg(philo_t *philo, int flag);
+void print_msg(philo_t *philo, char *color, char *description);
 // void check_is_dead(data_t *data);
 void check_dead_philo(data_t *data);
 void start_program(data_t *data);

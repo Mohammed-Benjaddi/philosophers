@@ -60,7 +60,7 @@ int main(int ac, char **av)
   if(!init_program(av + 1, data))
     return ft_error("Something went wrong!"), 1;
   // printf("time to die: %d\n", data->time_to_die);
-  printf("times to eat: %d\n", data->times_to_eat);
+  // printf("times to eat: %d\n", data->times_to_eat);
   // printf("time to sleep: %d\n", data->time_to_sleep);
   start_program(data);
   destroy_all_forks(data, data->n_philos);

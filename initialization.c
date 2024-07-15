@@ -40,13 +40,15 @@ int init_mutex(data_t *data)
       return (ft_error("mutex init failed"), 0);
     if(pthread_mutex_init(&data->philos[i].check_meal, NULL) != 0)
       return (ft_error("mutex init failed"), 0);
-    // if(pthread_mutex_init(&data->philos[i].is_eating, NULL) != 0)
-    //   return (ft_error("mutex init failed"), 0);
+    if(pthread_mutex_init(&data->philos[i].is_eating, NULL) != 0)
+      return (ft_error("mutex init failed"), 0);
     i++;
   }
   if(pthread_mutex_init(&data->print, NULL) != 0)
     return (ft_error("mutex init failed"), 0);
   if(pthread_mutex_init(&data->dead_mutex, NULL) != 0)
+    return (ft_error("mutex init failed"), 0);
+  if(pthread_mutex_init(&data->finished_m, NULL) != 0)
     return (ft_error("mutex init failed"), 0);
   // if(pthread_mutex_init(&data->someone_died_m, NULL) != 0)
   //   return (ft_error("mutex init failed"), 0);

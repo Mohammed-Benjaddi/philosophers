@@ -9,7 +9,7 @@ void *only_one_philo(void *philo_data)
   // ft_wait(philo->data->time_to_die + 100);
   philo->data->is_dead = 1;
   // pthread_mutex_lock(&philo->data->forks[philo->right_fork]);
-  print_msg(philo, 4);
+  print_msg(philo, YELLOW, "has taken a fork");
   pthread_mutex_lock(&philo->check_meal);
   philo->last_meal = get_current_time();
   pthread_mutex_unlock(&philo->check_meal);

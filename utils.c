@@ -53,37 +53,18 @@ int ft_atoi(char *str)
   return (result * sign);
 }
 
-void print_msg(philo_t *philo, int flag)
+void print_msg(philo_t *philo, char *color, char *description)
 {
   // printf("--> %d\n", flag);
-  // pthread_mutex_lock(&philo->data->is_dead_m);
-  if(!philo->data->finished)
+  pthread_mutex_lock(&philo->data->dead_mutex);
+
+  // pthread_mutex_lock(&philo->data->finished_m);
+  if(!philo->data->is_dead)
   {
     pthread_mutex_lock(&philo->data->print);
-    if (philo->data->is_dead)
-    {
-      // pthread_mutex_unlock(&philo->data->is_dead_m);
-      printf("%s%lld %d died%s\n", RED, get_current_time() - philo->data->start_time, philo->id, NC);
-      pthread_mutex_unlock(&philo->data->print);
-      philo->data->finished = 1;
-      return;
-    }
-    else
-    {
-      if (flag == 1)
-        printf("%s%lld %d is eating%s\n", GREEN, get_current_time() - philo->data->start_time, philo->id, NC);
-      else if (flag == 2)
-        printf("%s%lld %d is sleeping%s\n", CYAN, get_current_time() - philo->data->start_time, philo->id, NC);
-      else if (flag == 3)
-        printf("%s%lld %d is thinking%s\n", MAGENTA, get_current_time() - philo->data->start_time, philo->id, NC);
-      else if (flag == 4)
-        printf("%s%lld %d has taken a fork%s\n", YELLOW, get_current_time() - philo->data->start_time, philo->id, NC);
-      else if (flag == 5)
-        printf("%s%lld %d has taken a fork%s\n", YELLOW, get_current_time() - philo->data->start_time, philo->id, NC);
-      else if (flag == 25)
-        printf("%sAll philos ate%s\n", RED, NC);
-    }
+    printf("%s%lld %d %s%s\n", color, get_current_time() - philo->data->start_time, philo->id, description, NC);
     pthread_mutex_unlock(&philo->data->print);
   }
-  // pthread_mutex_unlock(&philo->data->is_dead_m);
+  // pthread_mutex_unlock(&philo->data->finished_m);
+  pthread_mutex_unlock(&philo->data->dead_mutex);
 }
