@@ -50,6 +50,8 @@ int init_mutex(data_t *data)
     return (ft_error("mutex init failed"), 0);
   if(pthread_mutex_init(&data->finished_m, NULL) != 0)
     return (ft_error("mutex init failed"), 0);
+  if(pthread_mutex_init(&data->all_ate_mutex, NULL) != 0)
+    return (ft_error("mutex init failed"), 0);
   // if(pthread_mutex_init(&data->someone_died_m, NULL) != 0)
   //   return (ft_error("mutex init failed"), 0);
   // if(pthread_mutex_init(&data->is_dead_m, NULL) != 0)

@@ -18,7 +18,7 @@ void check_dead_philo(data_t *data)
   i = 0;
   philo_t *philos;
   philos = data->philos;
-  while (i < data->n_philos)
+  while (i < data->n_philos && data->all_philos_ate != 1)
   {
     pthread_mutex_lock(&philos[i].check_meal);
     if(get_current_time() - philos[i].last_meal >= philos[i].data->time_to_die)
@@ -53,34 +53,38 @@ void check_dead_philo(data_t *data)
       i++;
       usleep(100);
     }
-    if(i == data->n_philos)
+    if(counter == data->n_philos)
     {
-      // print_msg(&philos[0], 25);
+      pthread_mutex_lock(&data->all_ate_mutex);
       data->all_philos_ate = 1;
-    }
+      pthread_mutex_unlock(&data->all_ate_mutex);
+      return;
+    } 
   }
-  
 }
 
 void ft_eat(philo_t *philo)
 {
+
   pthread_mutex_lock(&philo->data->forks[philo->left_fork]);
   pthread_mutex_lock(&philo->data->forks[philo->right_fork]);
   print_msg(philo, YELLOW, "has taken a fork");
   print_msg(philo, YELLOW, "has taken a fork");
   print_msg(philo, GREEN, "is eating");
+
   pthread_mutex_lock(&philo->check_meal);
   philo->last_meal = get_current_time();
   // printf("-------> start: %zu\n", philo->data->start_time);
   pthread_mutex_unlock(&philo->check_meal);
+
   ft_wait(philo->data->time_to_eat);
   // printf("%safter eating...%s\n", RED, NC);
   pthread_mutex_unlock(&philo->data->forks[philo->left_fork]);
   pthread_mutex_unlock(&philo->data->forks[philo->right_fork]);
 
-  // pthread_mutex_lock(&philo->is_eating);
+  pthread_mutex_lock(&philo->is_eating);
   philo->eat_count++;
-  // pthread_mutex_unlock(&philo->is_eating);
+  pthread_mutex_unlock(&philo->is_eating);
 }
 
 void destroy_all_forks(data_t *data, int size)
@@ -129,8 +133,13 @@ void *philo_routine(void *philos)
       break;
     }
     pthread_mutex_unlock(&philo->data->dead_mutex);
+    pthread_mutex_lock(&philo->data->all_ate_mutex);
     if(philo->data->all_philos_ate == 1)
+    {
+      pthread_mutex_unlock(&philo->data->all_ate_mutex);
       break;
+    }
+    pthread_mutex_unlock(&philo->data->all_ate_mutex);
     ft_eat(philo);
     ft_sleep(philo);
     ft_think(philo);

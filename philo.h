@@ -53,6 +53,7 @@ typedef struct data_s
   long long start_time;
   int times_to_eat;
   int all_philos_ate;
+  pthread_mutex_t all_ate_mutex;
 } data_t;
 
 void ft_error(char *str);
