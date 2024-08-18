@@ -6,7 +6,7 @@
 /*   By: mben-jad <mben-jad@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 18:14:46 by mben-jad          #+#    #+#             */
-/*   Updated: 2024/07/20 12:25:46 by mben-jad         ###   ########.fr       */
+/*   Updated: 2024/08/18 15:59:21 by mben-jad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,9 @@ int	main(int ac, char **av)
 {
 	t_data	*data;
 
-	data = malloc(sizeof(t_data));
 	if (ac != 5 && ac != 6)
-		return (1);
+		return (ft_error("Arguments must be 4 or 5"), 1);
+	data = malloc(sizeof(t_data));
 	if (!parsing(av + 1))
 	{
 		free(data);

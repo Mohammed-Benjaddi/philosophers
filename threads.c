@@ -6,7 +6,7 @@
 /*   By: mben-jad <mben-jad@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 18:14:53 by mben-jad          #+#    #+#             */
-/*   Updated: 2024/07/20 09:51:13 by mben-jad         ###   ########.fr       */
+/*   Updated: 2024/08/18 15:59:12 by mben-jad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,13 @@ static	void	*only_one_philo(void *philo_data)
 	t_philo	*philo;
 
 	philo = (t_philo *)philo_data;
+	pthread_mutex_lock(&philo->data->forks[philo->left_fork]);
+	print_msg(philo, YELLOW, "has taken a fork");
 	pthread_mutex_lock(&philo->check_meal);
 	philo->last_meal = get_current_time();
 	pthread_mutex_unlock(&philo->check_meal);
 	ft_wait(philo->data->time_to_die);
+	pthread_mutex_unlock(&philo->data->forks[philo->left_fork]);
 	return (NULL);
 }
 

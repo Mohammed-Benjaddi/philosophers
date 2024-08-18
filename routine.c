@@ -6,7 +6,7 @@
 /*   By: mben-jad <mben-jad@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/18 22:54:27 by mben-jad          #+#    #+#             */
-/*   Updated: 2024/07/20 12:09:06 by mben-jad         ###   ########.fr       */
+/*   Updated: 2024/08/18 15:59:15 by mben-jad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,8 +111,9 @@ void	*philo_routine(void *philos)
 	t_philo	*philo;
 
 	philo = (t_philo *)philos;
+	ft_think(philo);
 	if (philo->id % 2 == 0)
-		usleep(15000);
+		ft_wait(philo->data->time_to_eat / 2);
 	while (1)
 	{
 		if (!is_philo_dead(philo))

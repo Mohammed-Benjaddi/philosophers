@@ -6,7 +6,7 @@
 /*   By: mben-jad <mben-jad@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 18:18:16 by mben-jad          #+#    #+#             */
-/*   Updated: 2024/07/19 18:19:24 by mben-jad         ###   ########.fr       */
+/*   Updated: 2024/08/18 15:59:30 by mben-jad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,8 @@ void	ft_eat(t_philo *philo)
 	philo->last_meal = get_current_time();
 	pthread_mutex_unlock(&philo->check_meal);
 	ft_wait(philo->data->time_to_eat);
-	pthread_mutex_unlock(&philo->data->forks[philo->left_fork]);
 	pthread_mutex_unlock(&philo->data->forks[philo->right_fork]);
+	pthread_mutex_unlock(&philo->data->forks[philo->left_fork]);
 	pthread_mutex_lock(&philo->is_eating);
 	philo->eat_count++;
 	pthread_mutex_unlock(&philo->is_eating);
